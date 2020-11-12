@@ -9,10 +9,10 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import interpolator4j.Interpolator;
 import interpolator4j.imp.AndScope;
 import interpolator4j.imp.DefaultCharConfig;
 import interpolator4j.imp.DefaultScopeProvider;
-import interpolator4j.imp.Interpolator;
 import interpolator4j.imp.MathScope;
 import interpolator4j.imp.OrScope;
 import interpolator4j.imp.SimpleMapScope;

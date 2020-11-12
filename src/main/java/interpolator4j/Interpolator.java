@@ -1,4 +1,4 @@
-package interpolator4j.imp;
+package interpolator4j;
 
 public interface Interpolator {
   String interpolate(String input);

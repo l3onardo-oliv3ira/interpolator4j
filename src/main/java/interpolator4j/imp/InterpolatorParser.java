@@ -1,5 +1,7 @@
 package interpolator4j.imp;
 
+import interpolator4j.CharConfig;
+import interpolator4j.Interpolator;
 import interpolator4j.ScopeProvider;
 import interpolator4j.util.Strings;
 

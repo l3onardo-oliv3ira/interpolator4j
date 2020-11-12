@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import interpolator4j.Interpolator;
 import interpolator4j.imp.AndScope;
-import interpolator4j.imp.Interpolator;
 
 public class AndScopeTest extends InterpolatorTester {
   

@@ -1,6 +1,5 @@
 package interpolator4j.imp;
 
-import interpolator4j.AbstractScope;
 import interpolator4j.util.MathParser;
 
 public class MathScope extends AbstractScope {

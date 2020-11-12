@@ -3,8 +3,6 @@ package interpolator4j.imp;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
-import interpolator4j.AbstractScope;
-
 public class JScriptScope extends AbstractScope{
 
   private static final ScriptEngineManager FACTORY = new ScriptEngineManager();

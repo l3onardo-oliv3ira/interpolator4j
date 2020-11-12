@@ -1,5 +1,7 @@
 package interpolator4j.imp;
 
+import interpolator4j.BoundaryChar;
+
 public enum Boundary implements BoundaryChar{
   BRACES('{', '}'),
   BRACKETS('[', ']');

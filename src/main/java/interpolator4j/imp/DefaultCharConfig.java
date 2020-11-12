@@ -8,6 +8,9 @@ import static interpolator4j.imp.Expression.DOLLAR;
 import static interpolator4j.imp.Expression.HASH;
 import static interpolator4j.imp.Expression.PERCENT;
 
+import interpolator4j.CharConfig;
+import interpolator4j.ExpressionChar;
+
 public enum DefaultCharConfig implements CharConfig {
   DOLLAR_BRACKETS  (DOLLAR, BRACKETS),
   DOLLAR_BRACES    (DOLLAR, BRACES),

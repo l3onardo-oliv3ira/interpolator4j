@@ -1,7 +1,5 @@
 package interpolator4j.imp;
 
-import interpolator4j.AbstractScope;
-
 public final class ConstScope extends AbstractScope {
 
   private final String constant;

@@ -5,7 +5,6 @@ import static interpolator4j.util.Arguments.requireNonNull;
 import java.util.HashMap;
 import java.util.Map;
 
-import interpolator4j.AbstractScope;
 import interpolator4j.util.Objects;
 
 public class MapScope<T> extends AbstractScope {

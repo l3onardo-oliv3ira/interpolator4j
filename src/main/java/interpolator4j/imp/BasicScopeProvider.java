@@ -3,6 +3,8 @@ package interpolator4j.imp;
 import java.util.HashMap;
 import java.util.Map;
 
+import interpolator4j.CharConfig;
+import interpolator4j.Interpolator;
 import interpolator4j.Scope;
 import interpolator4j.ScopeProvider;
 import interpolator4j.util.Arguments;

@@ -2,7 +2,6 @@ package interpolator4j.imp;
 
 import java.io.PrintStream;
 
-import interpolator4j.AbstractScope;
 import interpolator4j.util.Arguments;
 
 public class PrintScope extends AbstractScope{

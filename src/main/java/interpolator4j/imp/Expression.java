@@ -1,5 +1,7 @@
 package interpolator4j.imp;
 
+import interpolator4j.ExpressionChar;
+
 public enum Expression implements ExpressionChar {
   DOLLAR('$'),
   HASH('#'),

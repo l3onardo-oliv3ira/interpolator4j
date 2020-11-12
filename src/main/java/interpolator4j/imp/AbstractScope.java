@@ -1,5 +1,6 @@
-package interpolator4j;
+package interpolator4j.imp;
 
+import interpolator4j.Scope;
 import interpolator4j.util.Arguments;
 import interpolator4j.util.Strings;
 

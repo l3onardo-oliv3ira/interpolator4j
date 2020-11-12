@@ -2,7 +2,6 @@ package interpolator4j.imp;
 
 import java.util.Properties;
 
-import interpolator4j.AbstractScope;
 import interpolator4j.util.Arguments;
 
 public class PropertiesScope extends AbstractScope {

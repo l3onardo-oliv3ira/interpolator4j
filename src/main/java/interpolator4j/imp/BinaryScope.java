@@ -4,7 +4,6 @@ import static interpolator4j.util.Strings.split;
 
 import java.util.List;
 
-import interpolator4j.AbstractScope;
 import interpolator4j.util.Arguments;
 import interpolator4j.util.Strings;
 
