@@ -15,16 +15,16 @@ public enum DefaultScope implements Scope{
     }
   },
   LONG{
-		@Override
-		public String getId() {
-			return "long";
-		}
+    @Override
+    public String getId() {
+      return "long";
+    }
 
-		@Override
-		public String eval(String expression) {
-			return Long.toString((long)Double.parseDouble(expression));
-		}
-	},
+    @Override
+    public String eval(String expression) {
+      return Long.toString((long)Double.parseDouble(expression));
+    }
+  },
   RUNTIME{
     private SupplierScope s = new SupplierScope.Builder()
       .map("availableProcessors", Runtime.getRuntime()::availableProcessors)
@@ -43,14 +43,14 @@ public enum DefaultScope implements Scope{
       return s.eval(expression);
     }
   },
-	UNDEFINED{
-		@Override
-		public String getId() {
-			return "undefined";
-		}
-		@Override
-		public String eval(String expression) {
-			return "scope not found";
-		}
+  UNDEFINED{
+    @Override
+    public String getId() {
+      return "undefined";
+    }
+    @Override
+    public String eval(String expression) {
+      return "scope not found";
+    }
   },
 }

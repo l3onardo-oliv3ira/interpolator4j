@@ -17,7 +17,7 @@ public class BasicScopeProvider implements ScopeProvider {
   @Override
   public ScopeProvider register(Scope scope) {
     Arguments.requireNonNull(scope, "scope can't be null");
-		scopes.put(scope.getId(), scope);
+    scopes.put(scope.getId(), scope);
     return this;
   }
 

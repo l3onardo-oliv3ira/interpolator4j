@@ -20,7 +20,7 @@ public class SupplierScope extends MapScope<Supplier<Object>> {
     }
   }
   
-	private SupplierScope(String id, Map<String, Supplier<Object>> map) {
+  private SupplierScope(String id, Map<String, Supplier<Object>> map) {
     super(id, map);
   }
 

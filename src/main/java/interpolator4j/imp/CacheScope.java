@@ -16,7 +16,7 @@ public class CacheScope extends ScopeWrapper {
   @Override
   public String eval(String expression) {
     String value = cache.get(expression);
-		if (value != null)
+    if (value != null)
       return value;
     cache.put(expression, value = super.eval(expression));
     return value;

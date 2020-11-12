@@ -34,14 +34,14 @@ public class BinaryScope extends AbstractScope {
     }
     boolean hasField = !field.isEmpty();
     List<String> parts = split(members, ',');
-		StringBuilder b = new StringBuilder();
-		for(String m: parts){
-			if (!Strings.hasText(m))
-				continue;
-			if (b.length() > 0)
-				b.append(' ').append(operator).append(' ');
-			b.append('(').append(hasField ? field + ":\"" : "").append(m).append(hasField ? "\"" : "").append(')');
-		}
-		return b.toString();
-	}
+    StringBuilder b = new StringBuilder();
+    for(String m: parts){
+      if (!Strings.hasText(m))
+        continue;
+      if (b.length() > 0)
+        b.append(' ').append(operator).append(' ');
+      b.append('(').append(hasField ? field + ":\"" : "").append(m).append(hasField ? "\"" : "").append(')');
+    }
+    return b.toString();
+  }
 }

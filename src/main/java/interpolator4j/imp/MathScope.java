@@ -10,7 +10,7 @@ public class MathScope extends AbstractScope {
   }
   
   public MathScope(String id) {
-  	super(id);
+    super(id);
   }
 
   @Override

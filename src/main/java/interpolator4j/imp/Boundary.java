@@ -1,24 +1,24 @@
 package interpolator4j.imp;
 
 public enum Boundary implements BoundaryChar{
-	BRACES('{', '}'),
-	BRACKETS('[', ']');
+  BRACES('{', '}'),
+  BRACKETS('[', ']');
 
-	private char begin;
-	private char end;
+  private char begin;
+  private char end;
 
-	Boundary(char begin, char end) {
-		this.begin = begin;
-		this.end = end;
-	}
-	
-	@Override
-	public char getBegin() {
-		return begin;
-	}
+  Boundary(char begin, char end) {
+    this.begin = begin;
+    this.end = end;
+  }
+  
+  @Override
+  public char getBegin() {
+    return begin;
+  }
 
-	@Override
-	public char getEnd() {
-		return end;
-	}
+  @Override
+  public char getEnd() {
+    return end;
+  }
 }
