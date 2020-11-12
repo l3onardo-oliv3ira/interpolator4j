@@ -9,20 +9,20 @@ import static interpolator4j.imp.Expression.HASH;
 import static interpolator4j.imp.Expression.PERCENT;
 
 public enum DefaultCharConfig implements CharConfig {
-  DOLLAR_BRACKETS      (DOLLAR, BRACKETS),
-  DOLLAR_BRACES        (DOLLAR, BRACES),
+  DOLLAR_BRACKETS  (DOLLAR, BRACKETS),
+  DOLLAR_BRACES    (DOLLAR, BRACES),
   
-  HASH_BRACKETS        (HASH, BRACKETS),
-  HASH_BRACES          (HASH, BRACES),
+  HASH_BRACKETS    (HASH, BRACKETS),
+  HASH_BRACES      (HASH, BRACES),
   
-  AT_BRACKETS          (AT, BRACKETS),
-  AT_BRACES            (AT, BRACES),
+  AT_BRACKETS      (AT, BRACKETS),
+  AT_BRACES        (AT, BRACES),
   
-  AND_BRACKETS        (AND, BRACKETS),
-  AND_BRACES          (AND, BRACES),
+  AND_BRACKETS     (AND, BRACKETS),
+  AND_BRACES       (AND, BRACES),
   
-  PERCENT_BRACKETS    (PERCENT, BRACKETS),
-  PERCENT_BRACES      (PERCENT, BRACES);
+  PERCENT_BRACKETS (PERCENT, BRACKETS),
+  PERCENT_BRACES   (PERCENT, BRACES);
 
   private ExpressionChar expressionChar;
   private Boundary boundary;
