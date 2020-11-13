@@ -24,6 +24,11 @@ public class BasicScopeProvider implements ScopeProvider {
   }
 
   @Override
+  public Scope unregister(String scopeId) {
+    return scopes.remove(scopeId);
+  }
+  
+  @Override
   public Scope get(String scopeName) {
     return Objects.getDefault(scopes.get(scopeName), DefaultScope.UNDEFINED);
   }
