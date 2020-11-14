@@ -28,7 +28,7 @@ System.out.println("Success: " + success);
 # A simple mapping Scope
 
 ```java
-
+//...
 Scope map = new SimpleMapScope.Builder()
   .map("1", "one")
   .map("2", "two")
@@ -44,7 +44,7 @@ Interpolator i = provider
 String expression = "a quick brown fox jumps over ${map:3} dogs";
 String actual = i.interpolate(expression);
 boolean success = "a quick brown fox jumps over three dogs".equals(actual);
-
+//...
 ```
 
 # A custom Scope
@@ -60,7 +60,6 @@ public class CastToLongScope extends AbstractScope {
   }
 }
 //...
-
 Interpolator i = provider
   .register(new CastToLongScope("long")) //scope id is 'long'
   .register(map) 
@@ -70,12 +69,13 @@ Interpolator i = provider
 String expression = "a quick brown fox jumps over ${long:${math:sqrt(9)}} dogs";
 String actual = i.interpolate(expression);
 boolean success = "a quick brown fox jumps over 3 dogs".equals(actual);
-
+//...
 ```
 
 # A java bean Scope
 
 ```java
+//...
 class Address {
   private String street;
   public Address(String street){ this.street = street;}
@@ -109,12 +109,13 @@ String actual = i.interpolate(expression);
 
 boolean success = "The user John lives on West Main " + 
   "street number tree".equals(actual);
-
+//...
 ```
 
 # A Supplier Scope
 
 ```java
+//...
 SupplierScope s = new SupplierScope.Builder()
   .map("availableProcessors", Runtime.getRuntime()::availableProcessors)
   .map("totalMemory", Runtime.getRuntime()::totalMemory)
@@ -139,11 +140,12 @@ String actual = i.interpolate(expression);
 boolean success = ("The user John lives on West Main " + 
   "street number three and his macbook " + 
   "has 4 available processors").equals(actual);
+//...
 ```
 
 # Debugging Expressions
 ```java
-
+//...
 String expression = "The user ${pojo:name} lives on ${pojo:address.street} " + 
   "street number ${map:${long:${math:sqrt(9)}} and his macbook " + 
   "has ${runtime:availableProcessors} available processors";
@@ -155,17 +157,14 @@ boolean success = ("The user John lives on West Main " +
   "street number tree and his macbook " + 
   "has 4 available processors").equals(actual);
 //...
-
 /*
 The console output:
-${pojo:name} -> John
-${pojo:address.street} -> West Main
-${math:sqrt(9)} -> 3.0
-${runtime:availableProcessors} -> 4
-${long:3.0} -> 3
-${map:3} -> three
-The user ${pojo:name} lives on ${pojo:address.street} street number ${map:${long:${math:sqrt(9)}}} and his macbook has ${runtime:availableProcessors} available processors -> The user John lives on West Main street number three and his macbook has 4 available processors
-
+  ${pojo:name} -> John
+  ${pojo:address.street} -> West Main
+  ${math:sqrt(9)} -> 3.0
+  ${runtime:availableProcessors} -> 4
+  ${long:3.0} -> 3
+  ${map:3} -> three
 */
 ```
 
@@ -176,17 +175,17 @@ class FileDebuggingOutput implements DebugMode {
   public FileDebuggingOutput(File file) throws IOException {
     this.out = new PrintWriter(new FileWriter(file));
   }
+  @Override //implement this method
   public void debug(String expression, String evaluated) {
     this.out.println(expression + " -> " + evaluated);
   }
 }
 
+//output to ./debugging.log file
 DebugMode mode = new FileDebuggingOutput(new File("./debugging.log"));
 
 String actual = i.interpolate(expression, mode);
-
 //output to ./debugging.log file
-
 ```
 
 # Changing Defaults
@@ -196,7 +195,7 @@ ScopeProvider provider = new BasicScopeProvider();
 
 Interpolator i = provider
   .register(new MathScope())
-  .build(DefaultCharConfig.HASH_BRACKETS); //config to #[]
+  .build(DefaultCharConfig.HASH_BRACKETS); //config to #[]. See options below
 
 String expression = "Interpolator version #[math:(9-8)] avaiable";
 String actual = i.interpolate(expression);
@@ -205,40 +204,40 @@ boolean success = "Interpolator version 1.0 available".equals(actual);
 /*
 Options:
 
-DefaultCharConfig.DOLLAR_BRACES    //set ${}
-DefaultCharConfig.DOLLAR_BRACKETS  //set $[]
-DefaultCharConfig.HASH_BRACKETS    //set #[]
-DefaultCharConfig.HASH_BRACES      //set #{}
-DefaultCharConfig.AT_BRACKETS      //set @[]
-DefaultCharConfig.AT_BRACES        //set @{}
-DefaultCharConfig.AND_BRACKETS     //set &[]
-DefaultCharConfig.AND_BRACES       //set &{}
-DefaultCharConfig.PERCENT_BRACKETS //set %[]
-DefaultCharConfig.PERCENT_BRACES   //set %{}
+  DefaultCharConfig.DOLLAR_BRACES    //set ${}
+  DefaultCharConfig.DOLLAR_BRACKETS  //set $[]
+  DefaultCharConfig.HASH_BRACKETS    //set #[]
+  DefaultCharConfig.HASH_BRACES      //set #{}
+  DefaultCharConfig.AT_BRACKETS      //set @[]
+  DefaultCharConfig.AT_BRACES        //set @{}
+  DefaultCharConfig.AND_BRACKETS     //set &[]
+  DefaultCharConfig.AND_BRACES       //set &{}
+  DefaultCharConfig.PERCENT_BRACKETS //set %[]
+  DefaultCharConfig.PERCENT_BRACES   //set %{}
 */
 
 ```
 
 # Availables API Scope's
 
- - AndScope
- - OrScope
- - BeanScope
- - BinaryScope
- - CacheScope
- - ConstScope
- - JavaScriptScope
- - MapScope
- - NashornScope
- - MathScope
- - PrintStreamScope
- - PropertiesScope
- - ScopeWrapper
- - SimpleMapScope
- - SupplierScope
- - SysoutScope
+ * AndScope
+ * OrScope
+ * BeanScope
+ * BinaryScope
+ * CacheScope
+ * ConstScope
+ * JavaScriptScope
+ * MapScope
+ * NashornScope
+ * MathScope
+ * PrintStreamScope
+ * PropertiesScope
+ * ScopeWrapper
+ * SimpleMapScope
+ * SupplierScope
+ * SysoutScope
 
- - DefaultScope.SYSTEM
- - DefaultScope.RUNTIME
- - DefaultScope.LONG
+ * DefaultScope.SYSTEM
+ * DefaultScope.RUNTIME
+ * DefaultScope.LONG
  
