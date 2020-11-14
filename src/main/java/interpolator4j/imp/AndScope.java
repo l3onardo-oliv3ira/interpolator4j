@@ -1,7 +1,7 @@
 package interpolator4j.imp;
 
-public class AndScope extends CacheScope {
+public class AndScope extends BinaryScope {
   public AndScope() {
-    super(new BinaryScope("AND"));
+    super("AND");
   }
 }
