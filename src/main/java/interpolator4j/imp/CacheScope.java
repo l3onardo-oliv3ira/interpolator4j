@@ -9,7 +9,7 @@ public class CacheScope extends ScopeWrapper {
 
   protected final Map<String, String> cache = new HashMap<>();
 
-  private boolean used = false;
+  private boolean hit = false;
   
   public CacheScope(Scope scope) {
     super(scope);
@@ -17,18 +17,18 @@ public class CacheScope extends ScopeWrapper {
 
   public void invalidate() {
     cache.clear();
-    used = false;
+    hit = false;
   }
   
-  public boolean isUsed() {
-    return used;
+  public boolean isHit() {
+    return hit;
   }
   
   @Override
   public String eval(String expression) {
     String value = cache.get(expression);
     if (value != null) {
-      used = true;
+      hit = true;
       return value;
     }
     cache.put(expression, value = super.eval(expression));

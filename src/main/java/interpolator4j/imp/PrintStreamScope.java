@@ -4,22 +4,22 @@ import java.io.PrintStream;
 
 import interpolator4j.util.Arguments;
 
-public class PrintScope extends AbstractScope{
+public class PrintStreamScope extends AbstractScope{
 
-  private final PrintStream printer;
+  protected final PrintStream printer;
 
-  public PrintScope(PrintStream printer) {
+  public PrintStreamScope(PrintStream printer) {
     this("print", printer);
   }
 
-  public PrintScope(String id, PrintStream printer) {
+  public PrintStreamScope(String id, PrintStream printer) {
     super(id);
     this.printer = Arguments.requireNonNull(printer, "printer can't be null");
   }
 
   @Override
   protected String doEval(String expression) {
-    printer.println(expression);
+    printer.print(expression);
     return expression;
   }
 }

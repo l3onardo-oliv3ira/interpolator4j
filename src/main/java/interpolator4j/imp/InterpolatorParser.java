@@ -1,8 +1,11 @@
 package interpolator4j.imp;
 
 import interpolator4j.CharConfig;
+import interpolator4j.DebugMode;
+import interpolator4j.DebugOption;
 import interpolator4j.Interpolator;
 import interpolator4j.ScopeProvider;
+import interpolator4j.util.Arguments;
 import interpolator4j.util.Strings;
 
 final class InterpolatorParser implements Interpolator {
@@ -10,24 +13,29 @@ final class InterpolatorParser implements Interpolator {
   private final ScopeProvider provider;
   private final CharConfig charConfig;
   private final String expression;
+  private DebugMode mode;
 
   private int current;
   private int endCurrent;
   
   InterpolatorParser(CharConfig charConfig, ScopeProvider provider){
-    this(charConfig, provider, "");
+    this(charConfig, provider, DebugOption.SILENT, "");
   }
   
-  InterpolatorParser(CharConfig charConfig, ScopeProvider provider, String expression){
+  private InterpolatorParser(CharConfig charConfig, ScopeProvider provider, DebugMode mode, String expression){
     this.charConfig = charConfig;
     this.endCurrent = (this.expression = expression.trim()).length();
     this.current = 0;
     this.provider = provider;
+    this.mode = mode;
   }
 
   @Override
-  public String interpolate(String expression){
-    return eval(expression);
+  public String interpolate(String expression, DebugMode debugMode){
+    this.mode = Arguments.requireNonNull(debugMode, "debugMode can't be null");
+    String eval = eval(expression);
+    mode.debug(expression, eval);
+    return eval;
   }
   
   private String resolve(){
@@ -116,7 +124,8 @@ final class InterpolatorParser implements Interpolator {
       scopeName, 
       new InterpolatorParser(
         charConfig, 
-        provider, 
+        provider,
+        mode,
         nextExpression
       ).resolve()
     );
@@ -124,10 +133,25 @@ final class InterpolatorParser implements Interpolator {
 
   private String compute(String scopeName, String value) {
     try{
-      return provider.get(scopeName).eval(value);
+      String eval = provider.get(scopeName).eval(value);
+      debug(scopeName, value, eval);
+      return eval;
     }catch(Exception e){
       return "[unable to eval '" + scopeName + "' on expression >" + value + "<]";
     }
+  }
+
+  private void debug(String scopeName, String value, String eval) {
+    if (!DebugOption.SILENT.equals(mode)) {
+      mode.debug(String.format("%c%c%s:%s%c",
+        charConfig.getChar(),
+        charConfig.getBegin(),
+        scopeName,
+        value,
+        charConfig.getEnd()),
+        eval
+      );
+    }    
   }
 
   private String eval(String expression){
@@ -182,9 +206,11 @@ final class InterpolatorParser implements Interpolator {
         String before = expression.substring(start, w + 1);
         String after  = expression.substring(w + 1);
         return new InterpolatorParser(
-            charConfig, 
-            provider,
-            before).resolve() + eval(after);
+          charConfig, 
+          provider,
+          mode,
+          before
+        ).resolve() + eval(after);
       }
     }while(true);
   }

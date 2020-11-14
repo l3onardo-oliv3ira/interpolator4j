@@ -9,6 +9,23 @@ import interpolator4j.util.Objects;
 
 public class MapScope<T> extends AbstractScope {
 
+  public static class Builder<T> {
+    protected final HashMap<String, T> map = new HashMap<>();
+
+    public final Builder<T> map(String key, T value) {
+      map.put(
+        requireNonNull(key, "key can't be null"), 
+        requireNonNull(value, "value can't be null")
+      );
+      return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <X extends MapScope<T>> X build(String id) {
+      return (X)new MapScope<T>(id, map);
+    }
+  }
+  
   protected final Map<String, T> map;
 
   public MapScope(String id, Map<String, T> map) {

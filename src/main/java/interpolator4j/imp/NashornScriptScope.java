@@ -1,17 +1,13 @@
 package interpolator4j.imp;
 
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 
-public class JScriptScope extends AbstractScope{
-
-  private static final ScriptEngineManager FACTORY = new ScriptEngineManager();
+public class NashornScriptScope extends ScriptScope{
 
   private ScriptEngine engine;
   
-  public JScriptScope() {
-    super("js");
-    engine = FACTORY.getEngineByName("JavaScript");
+  public NashornScriptScope(String id) {
+    super("js", DEFAULT_MANAGER.getEngineByName("JavaScript"));
   }
 
   @Override

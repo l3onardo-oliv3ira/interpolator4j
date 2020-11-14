@@ -7,6 +7,7 @@ import interpolator4j.util.Strings;
 public abstract class AbstractScope implements Scope {
   
   private String id; 
+  private boolean initialized = false;
 
   protected AbstractScope(String id) {
     this.id = Arguments.requireTrue(Strings::hasText, id, "Unsupported null or empty id for scope").toLowerCase();
@@ -16,7 +17,17 @@ public abstract class AbstractScope implements Scope {
     return this.id;
   }
 
+  /*
+   * On Init life cycle
+   * */
+  protected void onInit() {
+  }
+
   public final String eval(String expression) {
+    if (!initialized) {
+      onInit();
+      initialized = true;
+    }
     return Strings.safeTrim(doEval(expression));
   }
 
