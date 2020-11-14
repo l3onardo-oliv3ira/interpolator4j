@@ -3,12 +3,10 @@ package interpolator4j.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import interpolator4j.DebugOption;
 import interpolator4j.Interpolator;
 import interpolator4j.imp.AndScope;
 import interpolator4j.imp.DefaultCharConfig;
@@ -19,11 +17,10 @@ import interpolator4j.imp.SimpleMapScope;
 
 public class InterpolatorTest {
 
-  static DefaultScopeProvider PROVIDER = new DefaultScopeProvider();
+  private final static DefaultScopeProvider PROVIDER = new DefaultScopeProvider();
 
   @BeforeClass
   public static void setup(){
-    
     System.setProperty("one", "1");
     System.setProperty("two", "2");
     System.setProperty("three", "3");
@@ -31,32 +28,33 @@ public class InterpolatorTest {
     System.setProperty("five", "5");
     System.setProperty("six", "6");
     
-    Map<String, Object> map = new HashMap<>();
-    map.put("1", "one");
-    map.put("2", "two");
-    map.put("3", "three");
-    map.put("4", "four");
-    map.put("5", "five");
-    map.put("6", "six");
-    map.put("s", "system");
-    
-    Map<String, Object> syn = new HashMap<>();
-    syn.put("fast", "quick");
-    syn.put("dark", "brown");
-    syn.put("lion", "fox");
-    syn.put("skip", "jumps");
-    syn.put("on", "over");
-    syn.put("the", "a");
-    syn.put("lazy", "slow");
-    syn.put("dog", "cat");
-    syn.put("a slow cat", "the lazy dog");
-    
     PROVIDER
-      .register(new SimpleMapScope("map", map))
-      .register(new SimpleMapScope("syn", syn))
-      .register(new MathScope())
-      .register(new AndScope())
-      .register(new OrScope());
+    .register(new MathScope())
+    .register(new AndScope())
+    .register(new OrScope())
+    .register(
+      new SimpleMapScope.Builder()
+        .map("1", "one")
+        .map("2", "two")
+        .map("3", "three")
+        .map("4", "four")
+        .map("5", "five")
+        .map("6", "six")
+        .map("s", "system")
+        .build("map")
+      )
+    .register(new SimpleMapScope.Builder()
+      .map("fast", "quick")
+      .map("dark", "brown")
+      .map("lion", "fox")
+      .map("skip", "jumps")
+      .map("on", "over")
+      .map("the", "a")
+      .map("lazy", "slow")
+      .map("dog", "cat")
+      .map("a slow cat", "the lazy dog")
+      .build("syn")
+    );
   }
   
   @Test
@@ -89,21 +87,7 @@ public class InterpolatorTest {
   public void testInterpolation(){
     Interpolator r = PROVIDER.build();
     String expression = "word ${map:1} equals ${system:one}";
-    assertEquals("word one equals 1", r.interpolate(expression));
-  }
-  
-  @Test
-  public void testConstScope(){
-    Interpolator r = PROVIDER.build();
-    String exp01 = "${const:leonardo} oliveira";
-    String exp02 = "leonardo oliveira";
-    String exp03 = "leonardo ${const:oliveira}";
-    
-    exp01 = r.interpolate(exp01);
-    exp02 = r.interpolate(exp02);
-    exp03 = r.interpolate(exp03);
-    
-    assertTrue(exp01.equals(exp02) && exp02.equals(exp03));
+    assertEquals("word one equals 1", r.interpolate(expression, DebugOption.SYSOUT));
   }
   
   @Test
@@ -166,7 +150,7 @@ public class InterpolatorTest {
   public void testUnknownScope(){
     Interpolator r = PROVIDER.build();
     String expression = "${whatever:value}";
-    assertEquals("unknown_scope", r.interpolate(expression));
+    assertEquals("scope not found", r.interpolate(expression));
   }
 
   @Test

@@ -1,4 +1,17 @@
 package interpolator4j.test;
 
-public class PropertiesScopeTest {
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class PropertiesScopeTest extends InterpolatorTester {
+  
+  @BeforeClass
+  public static void setup() {
+    //getBasicProvider().register(??);
+  }
+  
+  @Test
+  public void test() {
+    //we have to go back here!
+  }
 }

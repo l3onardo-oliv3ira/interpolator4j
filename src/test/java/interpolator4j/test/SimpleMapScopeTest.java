@@ -1,3 +1,17 @@
 package interpolator4j.test;
 
-public class SimpleMapScopeTest {}
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class SimpleMapScopeTest extends InterpolatorTester {
+  
+  @BeforeClass
+  public static void setup() {
+    //getBasicProvider().register(??);
+  }
+  
+  @Test
+  public void test() {
+    //we have to go back here!
+  }
+}

@@ -28,7 +28,7 @@ public class OrScopeTest extends InterpolatorTester{
   public void testCombineExpression() {
     Interpolator i = getBasicProvider().build();
     String expression = "${or:exp1,${or:exp2,exp3},exp4}";
-    String expected = "(exp1) OR ((exp2) OR (exp3)) OR (exp3)";
+    String expected = "(exp1) OR ((exp2) OR (exp3)) OR (exp4)";
     String actual = i.interpolate(expression);
     assertEquals(expected, actual);
   }

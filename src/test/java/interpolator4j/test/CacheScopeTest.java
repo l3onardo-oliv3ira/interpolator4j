@@ -9,7 +9,7 @@ import interpolator4j.Interpolator;
 import interpolator4j.imp.CacheScope;
 import interpolator4j.imp.MathScope;
 
-public class CacheScopeTest  extends InterpolatorTester {
+public class CacheScopeTest extends InterpolatorTester {
   
   private static final CacheScope cache = new CacheScope(new MathScope());
   
@@ -20,18 +20,18 @@ public class CacheScopeTest  extends InterpolatorTester {
   
   @Test
   public void testCacheAccess() {
-    assertEquals(false, cache.isUsed());
+    assertEquals(false, cache.isHit());
     
     Interpolator i = getBasicProvider().build();
     String expression = "leonardo is the number ${math:(4-3)}";
     String expected = "leonardo is the number 1.0";
     String actual = i.interpolate(expression);
     assertEquals(actual, expected);
-    assertEquals(false, cache.isUsed());
+    assertEquals(false, cache.isHit());
 
     actual = i.interpolate(expression);
 
-    assertEquals(true, cache.isUsed());
+    assertEquals(true, cache.isHit());
     assertEquals(actual, expected);
     cache.invalidate();
   }

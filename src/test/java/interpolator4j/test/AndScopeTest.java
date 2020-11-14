@@ -28,7 +28,7 @@ public class AndScopeTest extends InterpolatorTester {
   public void testCombineExpression() {
     Interpolator i = getBasicProvider().build();
     String expression = "${and:exp1,${and:exp2,exp3},exp4}";
-    String expected = "(exp1) AND ((exp2) AND (exp3)) AND (exp3)";
+    String expected = "(exp1) AND ((exp2) AND (exp3)) AND (exp4)";
     String actual = i.interpolate(expression);
     assertEquals(expected, actual);
   }
