@@ -7,7 +7,7 @@ A simple expression interpolator written in java
 ScopeProvider provider = new BasicScopeProvider();
 
 //Register you scope implementation (@see Scope interface)
-provider.register(new MathScope());//default to 'math' scope id
+provider.register(new MathScope("math"));//default to 'math' scope id
 
 //Build your interpolator
 Interpolator i = provider.build();
@@ -18,7 +18,7 @@ String expression = "a quick brown fox jumps over ${math:(5-2)} dogs";
 //Do interpolate and get evaluated expression
 String actual = i.interpolate(expression);
 
-//The expected is
+//The expected is (math scope eval to double)
 boolean success = "a quick brown fox jumps over 3.0 dogs".equals(actual);
 
 System.out.println("Success: " + success);
@@ -38,7 +38,7 @@ Scope map = new SimpleMapScope.Builder()
 //We can register multiples scope's (ex: 'map' and 'math')
 Interpolator i = provider 
   .register(map) 
-  .register(new MathScope())
+  .register(new MathScope("math")) //This is your scope id 'math'
   .build();
 
 String expression = "a quick brown fox jumps over ${map:3} dogs";
@@ -56,14 +56,14 @@ public class CastToLongScope extends AbstractScope {
   }
   @Override 
   protected String doEval(String expression) {
-    return Long.toString((long)Double.parseDouble(expression));
+    return Long.toString((long)Double.parseDouble(expression)); //eval to long
   }
 }
 //...
 Interpolator i = provider
   .register(new CastToLongScope("long")) //scope id is 'long'
   .register(map) 
-  .register(new MathScope())
+  .register(new MathScope("math"))
   .build();
 
 String expression = "a quick brown fox jumps over ${long:${math:sqrt(9)}} dogs";
@@ -96,10 +96,10 @@ class User {
 User user = new User("John", new Address("West Main"));
 
 Interpolator i = provider
-  .register(new BeanScope("pojo", user)) //scope id is 'pojo'
+  .register(new BeanScope("pojo", user)) //scope id is 'pojo' 
   .register(new CastToLongScope("long"))
   .register(map)
-  .register(new MathScope())
+  .register(new MathScope("math"))
   .build();
 
 String expression = "The user ${pojo:name} lives on ${pojo:address.street} " + 
@@ -116,7 +116,7 @@ boolean success = "The user John lives on West Main " +
 
 ```java
 //...
-SupplierScope s = new SupplierScope.Builder()
+SupplierScope rt = new SupplierScope.Builder()
   .map("availableProcessors", Runtime.getRuntime()::availableProcessors)
   .map("totalMemory", Runtime.getRuntime()::totalMemory)
   .map("freeMemory", Runtime.getRuntime()::freeMemory)
@@ -124,11 +124,11 @@ SupplierScope s = new SupplierScope.Builder()
   .build("runtime");
 
 Interpolator i = provider
-  .register(s)
+  .register(rt)
   .register(new CastToLongScope("long"))
   .register(new BeanScope("pojo", user))
   .register(map)
-  .register(new MathScope())
+  .register(new MathScope("math"))
   .build();
   
 String expression = "The user ${pojo:name} lives on ${pojo:address.street} " + 
@@ -194,7 +194,7 @@ String actual = i.interpolate(expression, mode);
 ScopeProvider provider = new BasicScopeProvider();
 
 Interpolator i = provider
-  .register(new MathScope())
+  .register(new MathScope("math"))
   .build(DefaultCharConfig.HASH_BRACKETS); //config to #[]. See options below
 
 String expression = "Interpolator version #[math:(9-8)] avaiable";
@@ -218,7 +218,7 @@ Options:
 
 ```
 
-# Availables API Scope's
+# Available Scope API
 
  * AndScope
  * OrScope
@@ -236,7 +236,6 @@ Options:
  * SimpleMapScope
  * SupplierScope
  * SysoutScope
-
  * DefaultScope.SYSTEM
  * DefaultScope.RUNTIME
  * DefaultScope.LONG

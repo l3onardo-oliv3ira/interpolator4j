@@ -2,12 +2,12 @@ package interpolator4j.imp;
 
 import javax.script.ScriptEngine;
 
-public class NashornScriptScope extends ScriptScope{
+public class NashornScope extends ScriptScope{
 
   private ScriptEngine engine;
   
-  public NashornScriptScope(String id) {
-    super("js", DEFAULT_MANAGER.getEngineByName("JavaScript"));
+  public NashornScope(String id) {
+    super(id, DEFAULT_MANAGER.getEngineByName("nashorn"));
   }
 
   @Override
