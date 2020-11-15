@@ -248,9 +248,9 @@ ScopeProvider provider = new BasicScopeProvider();
 Interpolator i = provider
   .register(new MathScope("math"))
   .build(DefaultCharConfig.HASH_BRACKETS); //config to #[]. See options below
+  
 /*
 Options:
-
   DefaultCharConfig.DOLLAR_BRACES    //set ${}
   DefaultCharConfig.DOLLAR_BRACKETS  //set $[]
   DefaultCharConfig.HASH_BRACKETS    //set #[]
@@ -267,7 +267,9 @@ Options:
 ### Service
 ```java
 String expression = "Interpolator version #[math:(9-8)] avaiable";
+
 String actual = i.interpolate(expression);
+
 boolean success = "Interpolator version 1.0 available".equals(actual);
 ```
 
@@ -307,6 +309,7 @@ boolean success = "Interpolator version 1.0 available".equals(actual);
  * BeanScope
  ```java
     User user = new User("John", "Kennedy");
+    
     "Hello ${user:name} ${user:surname}" ->  "Hello John Kennedy"
  ```
  * CacheScope
@@ -330,12 +333,14 @@ boolean success = "Interpolator version 1.0 available".equals(actual);
  * DefaultScope.SYSTEM
   ```java
     Interpolator i = provider.register(DefaultScope.SYSTEM).build();
+    
     "Hello ${system:user.home}" -> "Hello /home/user" //eval to System.getProperty("user.home", "")
   ```
  * PropertiesScope
   ```java
     Properties properties = ....
     Interpolator i = provider.register(new PropertiesScope("prop", properties)).build();
+    
     "Hello ${prop:key}" -> "Hello World" //eval to properties.getProperty("key", "");
   ```
  * JavaScriptScope
@@ -352,6 +357,7 @@ boolean success = "Interpolator version 1.0 available".equals(actual);
  * SysoutScope
   ```java
     "Hello ${sysout:World}" -> "Hello World"
+    
     /*
     The console output will be:
       World
@@ -360,6 +366,7 @@ boolean success = "Interpolator version 1.0 available".equals(actual);
  * DefaultScope.RUNTIME
   ```java
     Interpolator i = provider.register(DefaultScope.RUNTIME).build();
+    
     "Available processors: ${runtime:availableProcessors}" -> "Available processors: 4"
     "Total memory: ${runtime:totalMemory}" -> "Total memory: 567892" 
     "Free memory: ${runtime:freeMemory}"  -> "Free memory: 8927836"
@@ -371,9 +378,13 @@ boolean success = "Interpolator version 1.0 available".equals(actual);
       .register(DefaultScope.LONG)
       .register(new MathScope())
       .build();
+      
     "sqrt(9) is ${long:${math:sqrt(9)}}" -> "sqrt(9) is 3" //cast double 3.0 to long 3
  ```
  * MathScope
+ ```java
+    ${math:(((2 + 5*(-10^2)/0.5)^2-100*sqrt((7-5)))+cos(45)^sin(30)*4-tan(60))} -> 995864.8192086903
+ ```
  * BinaryScope (base class api used by AndScope and OrScope)
  * ScopeWrapper (base class api)
  * MapScope (base class api for custom implementation Mapping Scope)
