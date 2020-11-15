@@ -229,12 +229,12 @@ class FileDebuggingOutput implements DebugMode {
     this.out.println(expression + " -> " + evaluated);
   }
 }
+
+//output to ./debugging.log file
+DebugMode mode = new FileDebuggingOutput(new File("./debugging.log"));
 ```
 ### Service
 ```java
-//output to ./debugging.log file
-DebugMode mode = new FileDebuggingOutput(new File("./debugging.log"));
-
 String actual = i.interpolate(expression, mode);
 //...
 ```
