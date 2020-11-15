@@ -1,21 +1,21 @@
 # interpolator4j
 A simple expression interpolator written in java
 
-# How to
+## How to
 ```java
 //Create a scope provider
 ScopeProvider provider = new BasicScopeProvider();
 
-//Register you scope implementation (@see Scope interface)
+//Register a scope implementation (@see Scope interface)
 provider.register(new MathScope("math"));//default to 'math' scope id
 
-//Build your interpolator
+//Build an interpolator
 Interpolator i = provider.build();
 
-//Prepare your expression
+//Prepare an expression
 String expression = "a quick brown fox jumps over ${math:(5-2)} dogs"; 
 
-//Do interpolate and get evaluated expression
+//Interpolate and get the evaluated expression
 String actual = i.interpolate(expression);
 
 //The expected is (math scope eval to double)
@@ -25,7 +25,7 @@ System.out.println("Success: " + success);
 
 ```
 
-# A simple mapping Scope
+## A simple mapping Scope
 
 ```java
 //...
@@ -38,7 +38,7 @@ Scope map = new SimpleMapScope.Builder()
 //We can register multiples scope's (ex: 'map' and 'math')
 Interpolator i = provider 
   .register(map) 
-  .register(new MathScope("math")) //This is your scope id 'math'
+  .register(new MathScope("math")) //This is the scope id 'math'
   .build();
 
 String expression = "a quick brown fox jumps over ${map:3} dogs";
@@ -47,7 +47,7 @@ boolean success = "a quick brown fox jumps over three dogs".equals(actual);
 //...
 ```
 
-# A custom Scope
+## A custom Scope
 
 ```java
 public class CastToLongScope extends AbstractScope {
@@ -61,7 +61,7 @@ public class CastToLongScope extends AbstractScope {
 }
 //...
 Interpolator i = provider
-  .register(new CastToLongScope("long")) //scope id is 'long'
+  .register(new CastToLongScope("long")) //Here scope id is 'long'
   .register(map) 
   .register(new MathScope("math"))
   .build();
@@ -72,7 +72,7 @@ boolean success = "a quick brown fox jumps over 3 dogs".equals(actual);
 //...
 ```
 
-# A java bean Scope
+## A java bean Scope
 
 ```java
 //...
@@ -96,7 +96,8 @@ class User {
 User user = new User("John", new Address("West Main"));
 
 Interpolator i = provider
-  .register(new BeanScope("pojo", user)) //scope id is 'pojo' 
+   //scope id below is 'pojo' (you might want to rename it to 'user' instead) 
+  .register(new BeanScope("pojo", user)) 
   .register(new CastToLongScope("long"))
   .register(map)
   .register(new MathScope("math"))
@@ -112,7 +113,7 @@ boolean success = "The user John lives on West Main " +
 //...
 ```
 
-# A Supplier Scope
+## A supplier Scope
 
 ```java
 //...
@@ -143,14 +144,14 @@ boolean success = ("The user John lives on West Main " +
 //...
 ```
 
-# Debugging Expressions
+## Debugging expressions
 ```java
 //...
 String expression = "The user ${pojo:name} lives on ${pojo:address.street} " + 
   "street number ${map:${long:${math:sqrt(9)}} and his macbook " + 
   "has ${runtime:availableProcessors} available processors";
 
-//second argument is debugging output
+//second argument is debugging instance output
 String actual = i.interpolate(expression, DebugOption.SYSOUT);
 
 boolean success = ("The user John lives on West Main " + 
@@ -158,7 +159,7 @@ boolean success = ("The user John lives on West Main " +
   "has 4 available processors").equals(actual);
 //...
 /*
-The console output:
+The console output will be:
   ${pojo:name} -> John
   ${pojo:address.street} -> West Main
   ${math:sqrt(9)} -> 3.0
@@ -168,14 +169,14 @@ The console output:
 */
 ```
 
-# Custom Debugging Output
+## Custom debugging output
 
 ```java
 class FileDebuggingOutput implements DebugMode {
   public FileDebuggingOutput(File file) throws IOException {
     this.out = new PrintWriter(new FileWriter(file));
   }
-  @Override //implement this method
+  @Override //Reimplement this method if you want
   public void debug(String expression, String evaluated) {
     this.out.println(expression + " -> " + evaluated);
   }
@@ -185,10 +186,10 @@ class FileDebuggingOutput implements DebugMode {
 DebugMode mode = new FileDebuggingOutput(new File("./debugging.log"));
 
 String actual = i.interpolate(expression, mode);
-//output to ./debugging.log file
+//...
 ```
 
-# Changing Defaults
+## Changing defaults
 
 ```java
 ScopeProvider provider = new BasicScopeProvider();
@@ -218,25 +219,94 @@ Options:
 
 ```
 
-# Available Scope API
-
+## Available scope API
+ 
  * AndScope
+ ```java
+    "${and:exp1,exp2}"              -> (exp1) AND (exp2)
+    "(${and:exp1,exp2,exp3})"       -> ((exp1) AND (exp2) AND (exp3))
+    "${and:field;exp1,exp2}"        -> (field:"exp1") AND (field:"exp2") //Lucene sintaxe integration
+    "(${and:field;exp1,exp2;exp3})" -> ((field:"exp1") AND (field:"exp2") AND (field:"exp3"))
+ ```
  * OrScope
+ ```java
+    "${or: exp1,exp2}"             -> (exp1) OR (exp2)
+    "(${or:exp1,exp2,exp3})"       -> ((exp1) OR (exp2) OR (exp3))
+    "${or:field;exp1,exp2}"        -> (field:"exp1") OR (field:"exp2")  //Lucene sintaxe integration
+    "(${or:field;exp1,exp2;exp3})" -> ((field:"exp1") OR (field:"exp2") OR (field:"exp3"))
+  ```
  * BeanScope
- * BinaryScope
+ ```java
+    User user = new User("John", "Kennedy");
+    "Hello ${user:name} ${user:surname}" ->  "Hello John Kennedy"
+ ```
  * CacheScope
+  ```java
+  Interpolator i = provider.register(new CacheScope(new MathScope("math"))).build();
+  String e1 = "Number ${math:(3+2*sqrt(9)}";
+  String e2 = i.interpolate(e1); //eval to "Number 9.0"
+  
+  //Expression 3+2*sqrt(9) was cached, so it wil not eval again (sqrt will not invoked more than 1 time)
+  String e3 = i.interpolate(e1); 
+  ```
  * ConstScope
- * JavaScriptScope
- * MapScope
- * NashornScope
- * MathScope
- * PrintStreamScope
+  ```java
+  Interpolator i = provider.register(new ConstScope("const", "World")).build();
+  String e1 = "Hello ${const:Whatever}";
+  String e2 = i.interpolate(e1); //eval to "Hello World" (Whatever is ignored and replaced to "World")
+  ``` 
+ * DefaultScope.SYSTEM
+  ```java
+  Interpolator i = provider.register(DefaultScope.SYSTEM).build();
+  "Hello ${system:user.home}" -> "Hello /home/user" //eval to System.getProperty("user.home", "")
+  ```
  * PropertiesScope
- * ScopeWrapper
+  ```java
+  Properties properties = ....
+  Interpolator i = provider.register(new PropertiesScope("prop", properties)).build();
+  "Hello ${prop:key}" -> "Hello World" //eval to properties.getProperty("key", "");
+  ```
+ * JavaScriptScope
+  ```java
+  String code = "function sum(a, b) { return a + b; } sum(3,4);";
+  Interpolator i = getBasicProvider()
+    .register(new ConstScope("code", code))
+    .register(new JavaScriptScope("js"))
+    .build(DefaultCharConfig.HASH_BRACKETS); //prevent braces conflicts with javascript code! 
+  String e1 = "Result is #[js:#[code:source]]";
+  String actual = i.interpolate(e1);
+  String expected = "Result is 7.0";
+  ```
+ * SysoutScope
+  ```java
+    "Hello ${sysout:World}" -> "Hello World"
+    /*
+    The console output will be:
+      World
+    */
+  ```
+ * DefaultScope.RUNTIME
+  ```java
+    Interpolator i = provider.register(DefaultScope.RUNTIME).build();
+    "Available processors: ${runtime:availableProcessors}" -> "Available processors: 4"
+    "Total memory: ${runtime:totalMemory}" -> "Total memory: 567892" 
+    "Free memory: ${runtime:freeMemory}"  -> "Free memory: 8927836"
+    "Max memory: ${runtime:maxMemory}"   -> "Max memory: 1225612"
+  ```
+ * DefaultScope.LONG
+ ```java
+    Interpolator i = provider
+      .register(DefaultScope.LONG)
+      .register(new MathScope())
+      .build();
+    "sqrt(9) is ${long:${math:sqrt(9)}}" -> "sqrt(9) is 3" //cast double 3.0 to long 3
+ ```
+ * MathScope
+ * BinaryScope (base class api used by AndScope and OrScope)
+ * ScopeWrapper (base class api)
+ * MapScope (base class api for custom implementation Mapping Scope)
  * SimpleMapScope
  * SupplierScope
- * SysoutScope
- * DefaultScope.SYSTEM
- * DefaultScope.RUNTIME
- * DefaultScope.LONG
+ * PrintStreamScope
+ ```
  
