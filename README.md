@@ -263,7 +263,7 @@ Options:
     String e1 = "Number ${math:(3+2*sqrt(9)}";
     String e2 = i.interpolate(e1); //eval to "Number 9.0"
 
-    //Expression 3+2*sqrt(9) was cached, so it wil not eval again 
+    //Expression 3+2*sqrt(9) was cached, so it will not eval again 
     //(sqrt will not invoked more than 1 time, for example)
     String e3 = i.interpolate(e1); 
   ```
@@ -289,7 +289,7 @@ Options:
  * JavaScriptScope
   ```java
     String code = "function sum(a, b) { return a + b; } sum(3,4);";
-    Interpolator i = getBasicProvider()
+    Interpolator i = provider
       .register(new ConstScope("source", code))
       .register(new JavaScriptScope("js"))
       .build(DefaultCharConfig.HASH_BRACKETS); //prevent braces conflicts with javascript code! 
