@@ -246,14 +246,17 @@ Options:
     String e1 = "Number ${math:(3+2*sqrt(9)}";
     String e2 = i.interpolate(e1); //eval to "Number 9.0"
 
-    //Expression 3+2*sqrt(9) was cached, so it wil not eval again (sqrt will not invoked more than 1 time)
+    //Expression 3+2*sqrt(9) was cached, so it wil not eval again 
+    //(sqrt will not invoked more than 1 time, for example)
     String e3 = i.interpolate(e1); 
   ```
  * ConstScope
   ```java
     Interpolator i = provider.register(new ConstScope("const", "World")).build();
     String e1 = "Hello ${const:Whatever}";
-    String e2 = i.interpolate(e1); //eval to "Hello World" (Whatever is ignored and replaced to "World")
+    
+    //eval to "Hello World" (Whatever is ignored and replaced to "World")
+    String e2 = i.interpolate(e1);
   ``` 
  * DefaultScope.SYSTEM
   ```java
