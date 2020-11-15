@@ -1,6 +1,15 @@
 # interpolator4j
-A simple expression interpolator written in java. 
+A simple expression interpolator written in java. An interpolation expression is defined by:
 
+  _${id:expression}_ 
+
+where:
+  * _$_ is the interpolation char initiator
+  * _id_ is the immutable scope id for your scope implementation (see Scope interface API)
+  * _:_ is the fixed char separator between _id_ and _expression_
+  * _{_ and _}_ are char delimiters
+  * _expression_ is an expression to be evaluated by the scope _id_ implementation 
+  
 ## Overview
 ```java
 
@@ -22,7 +31,7 @@ A simple expression interpolator written in java.
 //Create a scope provider
 ScopeProvider provider = new BasicScopeProvider();
 
-//Register a scope implementation (@see Scope interface)
+//Register a scope implementation
 provider.register(new MathScope("math"));//This is the scope id 'math'
 
 //Build an interpolator
@@ -65,11 +74,12 @@ Interpolator i = provider
 ```
 ### Service
 ```java
-String expression = "a quick brown fox jumps over ${map:3} dogs";
+String expression = "${math:(5-4)} quick brown fox jumps over ${map:3} dogs";
 String actual = i.interpolate(expression);
-boolean success = "a quick brown fox jumps over three dogs".equals(actual);
+boolean success = "1.0 quick brown fox jumps over three dogs".equals(actual);
 
 /*
+${math:(5-4)} -> 1.0
 ${map:3} -> tree
 */
 ```
@@ -95,11 +105,13 @@ Interpolator i = provider
 ```
 ### Service
 ```java
-String expression = "a quick brown fox jumps over ${long:${math:sqrt(9)}} dogs";
+String expression = "${long:${math:(3-2)}} quick brown fox jumps over ${long:${math:sqrt(9)}} dogs";
 String actual = i.interpolate(expression);
 boolean success = "a quick brown fox jumps over 3 dogs".equals(actual);
 
 /*
+${math:(3-2)} -> 1.0
+${long:1.0} -> 1
 ${math:sqrt(9)} -> 3.0
 ${long:3.0} -> 3
 */
