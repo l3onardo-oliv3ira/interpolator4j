@@ -1,7 +1,23 @@
 # interpolator4j
-A simple expression interpolator written in java
+A simple expression interpolator written in java. 
 
-## How to
+## Overview
+```java
+
+  Interpolator i = ...
+
+  String expr   = "This is a ${map:adjective} string literal in ${map:language}";
+
+  String eval   = i.interpolate(expr);
+
+  String target = "This is a simple string literal in java";
+
+  boolean great = target.equals(evaluated); 
+```
+
+## How to works
+
+### Infrastructure
 ```java
 //Create a scope provider
 ScopeProvider provider = new BasicScopeProvider();
@@ -11,7 +27,9 @@ provider.register(new MathScope("math"));//This is the scope id 'math'
 
 //Build an interpolator
 Interpolator i = provider.build();
-
+```
+### Service
+```java
 //Prepare an expression
 String expression = "a quick brown fox jumps over ${math:(5-2)} dogs"; 
 
@@ -23,10 +41,14 @@ boolean success = "a quick brown fox jumps over 3.0 dogs".equals(actual);
 
 System.out.println("Success: " + success);
 
+/*
+${math:(5-2)} -> 3.0
+*/
 ```
 
 ## A simple mapping scope
 
+### Infrastructure
 ```java
 //...
 Scope map = new SimpleMapScope.Builder()
@@ -40,15 +62,20 @@ Interpolator i = provider
   .register(map) 
   .register(new MathScope("math")) 
   .build();
-
+```
+### Service
+```java
 String expression = "a quick brown fox jumps over ${map:3} dogs";
 String actual = i.interpolate(expression);
 boolean success = "a quick brown fox jumps over three dogs".equals(actual);
-//...
+
+/*
+${map:3} -> tree
+*/
 ```
 
 ## A custom scope
-
+### Infrastructure
 ```java
 public class CastToLongScope extends AbstractScope {
   public CastToLongScope(String id) {
@@ -65,15 +92,21 @@ Interpolator i = provider
   .register(map) 
   .register(new MathScope("math"))
   .build();
-
+```
+### Service
+```java
 String expression = "a quick brown fox jumps over ${long:${math:sqrt(9)}} dogs";
 String actual = i.interpolate(expression);
 boolean success = "a quick brown fox jumps over 3 dogs".equals(actual);
-//...
+
+/*
+${math:sqrt(9)} -> 3.0
+${long:3.0} -> 3
+*/
 ```
 
 ## A java bean scope
-
+### Infrastructure
 ```java
 //...
 class Address {
@@ -102,7 +135,9 @@ Interpolator i = provider
   .register(map)
   .register(new MathScope("math"))
   .build();
-
+```
+### Service
+```java
 String expression = "The user ${pojo:name} lives on ${pojo:address.street} " + 
   "street number ${map:${long:${math:sqrt(9)}}}";
 
@@ -111,10 +146,17 @@ String actual = i.interpolate(expression);
 boolean success = ("The user John lives on West Main " + 
   "street number tree").equals(actual);
 
+/*
+${pojo:name} -> John
+${pojo:address.street} -> West Main
+${math:sqrt(9)} -> 3.0
+${long:3.0} -> 3
+${map:3} -> tree
+*/
 ```
 
 ## A supplier scope
-
+### Infrastructure
 ```java
 //...
 SupplierScope rt = new SupplierScope.Builder()
@@ -131,7 +173,9 @@ Interpolator i = provider
   .register(map)
   .register(new MathScope("math"))
   .build();
-  
+```
+### Service
+```java
 String expression = "The user ${pojo:name} lives on ${pojo:address.street} " + 
   "street number ${map:${long:${math:sqrt(9)}}} and his macbook " + 
   "has ${runtime:availableProcessors} available processors";
@@ -145,6 +189,7 @@ boolean success = ("The user John lives on West Main " +
 ```
 
 ## Debugging expressions
+### Service
 ```java
 //...
 String expression = "The user ${pojo:name} lives on ${pojo:address.street} " + 
@@ -157,7 +202,9 @@ String actual = i.interpolate(expression, DebugOption.SYSOUT);
 boolean success = ("The user John lives on West Main " + 
   "street number tree and his macbook " + 
   "has 4 available processors").equals(actual);
-
+```
+### Output
+```java
 /*
 The console output will be:
   ${pojo:name} -> John
@@ -171,6 +218,7 @@ The console output will be:
 
 ## Custom debugging output
 
+### Infrastructure
 ```java
 class FileDebuggingOutput implements DebugMode {
   public FileDebuggingOutput(File file) throws IOException {
@@ -181,7 +229,9 @@ class FileDebuggingOutput implements DebugMode {
     this.out.println(expression + " -> " + evaluated);
   }
 }
-
+```
+### Service
+```java
 //output to ./debugging.log file
 DebugMode mode = new FileDebuggingOutput(new File("./debugging.log"));
 
@@ -191,17 +241,13 @@ String actual = i.interpolate(expression, mode);
 
 ## Changing defaults
 
+### Infrastructure
 ```java
 ScopeProvider provider = new BasicScopeProvider();
 
 Interpolator i = provider
   .register(new MathScope("math"))
   .build(DefaultCharConfig.HASH_BRACKETS); //config to #[]. See options below
-
-String expression = "Interpolator version #[math:(9-8)] avaiable";
-String actual = i.interpolate(expression);
-boolean success = "Interpolator version 1.0 available".equals(actual);
-
 /*
 Options:
 
@@ -216,7 +262,13 @@ Options:
   DefaultCharConfig.PERCENT_BRACKETS //set %[]
   DefaultCharConfig.PERCENT_BRACES   //set %{}
 */
+```
 
+### Service
+```java
+String expression = "Interpolator version #[math:(9-8)] avaiable";
+String actual = i.interpolate(expression);
+boolean success = "Interpolator version 1.0 available".equals(actual);
 ```
 
 ## Available scope API
