@@ -17,7 +17,7 @@ public class ScriptScope extends AbstractScope {
   }
   
   @Override
-  public String doEval(String expression) {
+  protected String doEval(String expression) {
     try {
       return engine.eval(expression).toString();
     } catch (Exception e) {
