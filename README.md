@@ -7,7 +7,7 @@ A simple expression interpolator written in java
 ScopeProvider provider = new BasicScopeProvider();
 
 //Register a scope implementation (@see Scope interface)
-provider.register(new MathScope("math"));//default to 'math' scope id
+provider.register(new MathScope("math"));//This is the scope id 'math'
 
 //Build an interpolator
 Interpolator i = provider.build();
@@ -38,7 +38,7 @@ Scope map = new SimpleMapScope.Builder()
 //We can register multiples scope's (ex: 'map' and 'math')
 Interpolator i = provider 
   .register(map) 
-  .register(new MathScope("math")) //This is the scope id 'math'
+  .register(new MathScope("math")) 
   .build();
 
 String expression = "a quick brown fox jumps over ${map:3} dogs";
@@ -61,7 +61,7 @@ public class CastToLongScope extends AbstractScope {
 }
 //...
 Interpolator i = provider
-  .register(new CastToLongScope("long")) //Here scope id is 'long'
+  .register(new CastToLongScope("long")) //scope id is 'long'
   .register(map) 
   .register(new MathScope("math"))
   .build();
@@ -151,7 +151,7 @@ String expression = "The user ${pojo:name} lives on ${pojo:address.street} " +
   "street number ${map:${long:${math:sqrt(9)}} and his macbook " + 
   "has ${runtime:availableProcessors} available processors";
 
-//second argument is debugging instance output
+//second argument is debugging output instance
 String actual = i.interpolate(expression, DebugOption.SYSOUT);
 
 boolean success = ("The user John lives on West Main " + 
@@ -220,6 +220,23 @@ Options:
 ```
 
 ## Available scope API
+ * DefaultScopeProvider
+ ```java
+    //this class automaticaly register all DefaultScope API
+    Interpolator i = new DefaultScopeProvider().build();
+    
+    //Line above is equivalent to
+    ScopeProvider provider = new BasicScopeProvider();
+    Interpolator i = 
+    provider.register(DefaultScope.SYSTEM)     //'system' id
+            .register(DefaultScope.MATH)       //'math' id
+            .register(DefaultScope.RUNTIME)    //'runtime' id
+            .register(DefaultScope.JAVASCRIPT) //'js' id
+            .register(DefaultScope.SYSOUT)     //'sysout' id
+            .register(DefaultScope.LONG)       //'long' id
+            .register(DefaultScope.UNDEFINED)  //'undefined' id (eval to 'scope not found')
+            .build();
+ ```
  
  * AndScope
  ```java
@@ -273,10 +290,10 @@ Options:
   ```java
     String code = "function sum(a, b) { return a + b; } sum(3,4);";
     Interpolator i = getBasicProvider()
-      .register(new ConstScope("code", code))
+      .register(new ConstScope("source", code))
       .register(new JavaScriptScope("js"))
       .build(DefaultCharConfig.HASH_BRACKETS); //prevent braces conflicts with javascript code! 
-    String e1 = "Result is #[js:#[code:source]]";
+    String e1 = "Result is #[js:#[source:code]]";
     String actual = i.interpolate(e1);
     String expected = "Result is 7.0";
   ```
