@@ -108,9 +108,9 @@ String expression = "The user ${pojo:name} lives on ${pojo:address.street} " +
 
 String actual = i.interpolate(expression);
 
-boolean success = "The user John lives on West Main " + 
-  "street number tree".equals(actual);
-//...
+boolean success = ("The user John lives on West Main " + 
+  "street number tree").equals(actual);
+
 ```
 
 ## A supplier scope
