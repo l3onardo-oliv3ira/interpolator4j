@@ -327,12 +327,12 @@ boolean success = "Interpolator version 1.0 available".equals(actual);
  * CacheScope
   ```java
     Interpolator i = provider.register(new CacheScope(new MathScope("math"))).build();
+    
     String e1 = "Number ${math:(3+2*sqrt(9)}";
     String e2 = i.interpolate(e1); //eval to "Number 9.0"
 
-    //Expression 3+2*sqrt(9) was cached, so it will not eval again 
-    //(sqrt will not invoked more than 1 time, for example)
-    String e3 = i.interpolate(e1); //eval to "Number 9.0" again using previous cached value
+    //The string expression '(3+2*sqrt(9))' was cached, so it will not eval again 
+    String e3 = i.interpolate(e1); //eval to "Number 9.0" too using previous cached value
   ```
  * ConstScope
   ```java
