@@ -288,7 +288,7 @@ boolean success = "Interpolator version 1.0 available".equals(actual);
 ## Available scope API
  * DefaultScopeProvider
  ```java
-    //this class automaticaly register all DefaultScope API
+    //this class automatically register all DefaultScope API
     Interpolator i = new DefaultScopeProvider().build();
     
     //Line above is equivalent to
