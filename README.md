@@ -107,7 +107,7 @@ Interpolator i = provider
 ```java
 String expression = "${long:${math:(3-2)}} quick brown fox jumps over ${long:${math:sqrt(9)}} dogs";
 String actual = i.interpolate(expression);
-boolean success = "a quick brown fox jumps over 3 dogs".equals(actual);
+boolean success = "1 quick brown fox jumps over 3 dogs".equals(actual);
 
 /*
 ${math:(3-2)} -> 1.0
