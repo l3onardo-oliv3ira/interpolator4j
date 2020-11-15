@@ -25,7 +25,7 @@ System.out.println("Success: " + success);
 
 ```
 
-## A simple mapping Scope
+## A simple mapping scope
 
 ```java
 //...
@@ -47,7 +47,7 @@ boolean success = "a quick brown fox jumps over three dogs".equals(actual);
 //...
 ```
 
-## A custom Scope
+## A custom scope
 
 ```java
 public class CastToLongScope extends AbstractScope {
@@ -72,7 +72,7 @@ boolean success = "a quick brown fox jumps over 3 dogs".equals(actual);
 //...
 ```
 
-## A java bean Scope
+## A java bean scope
 
 ```java
 //...
@@ -113,7 +113,7 @@ boolean success = "The user John lives on West Main " +
 //...
 ```
 
-## A supplier Scope
+## A supplier scope
 
 ```java
 //...
@@ -157,7 +157,7 @@ String actual = i.interpolate(expression, DebugOption.SYSOUT);
 boolean success = ("The user John lives on West Main " + 
   "street number tree and his macbook " + 
   "has 4 available processors").equals(actual);
-//...
+
 /*
 The console output will be:
   ${pojo:name} -> John
@@ -242,40 +242,40 @@ Options:
  ```
  * CacheScope
   ```java
-  Interpolator i = provider.register(new CacheScope(new MathScope("math"))).build();
-  String e1 = "Number ${math:(3+2*sqrt(9)}";
-  String e2 = i.interpolate(e1); //eval to "Number 9.0"
-  
-  //Expression 3+2*sqrt(9) was cached, so it wil not eval again (sqrt will not invoked more than 1 time)
-  String e3 = i.interpolate(e1); 
+    Interpolator i = provider.register(new CacheScope(new MathScope("math"))).build();
+    String e1 = "Number ${math:(3+2*sqrt(9)}";
+    String e2 = i.interpolate(e1); //eval to "Number 9.0"
+
+    //Expression 3+2*sqrt(9) was cached, so it wil not eval again (sqrt will not invoked more than 1 time)
+    String e3 = i.interpolate(e1); 
   ```
  * ConstScope
   ```java
-  Interpolator i = provider.register(new ConstScope("const", "World")).build();
-  String e1 = "Hello ${const:Whatever}";
-  String e2 = i.interpolate(e1); //eval to "Hello World" (Whatever is ignored and replaced to "World")
+    Interpolator i = provider.register(new ConstScope("const", "World")).build();
+    String e1 = "Hello ${const:Whatever}";
+    String e2 = i.interpolate(e1); //eval to "Hello World" (Whatever is ignored and replaced to "World")
   ``` 
  * DefaultScope.SYSTEM
   ```java
-  Interpolator i = provider.register(DefaultScope.SYSTEM).build();
-  "Hello ${system:user.home}" -> "Hello /home/user" //eval to System.getProperty("user.home", "")
+    Interpolator i = provider.register(DefaultScope.SYSTEM).build();
+    "Hello ${system:user.home}" -> "Hello /home/user" //eval to System.getProperty("user.home", "")
   ```
  * PropertiesScope
   ```java
-  Properties properties = ....
-  Interpolator i = provider.register(new PropertiesScope("prop", properties)).build();
-  "Hello ${prop:key}" -> "Hello World" //eval to properties.getProperty("key", "");
+    Properties properties = ....
+    Interpolator i = provider.register(new PropertiesScope("prop", properties)).build();
+    "Hello ${prop:key}" -> "Hello World" //eval to properties.getProperty("key", "");
   ```
  * JavaScriptScope
   ```java
-  String code = "function sum(a, b) { return a + b; } sum(3,4);";
-  Interpolator i = getBasicProvider()
-    .register(new ConstScope("code", code))
-    .register(new JavaScriptScope("js"))
-    .build(DefaultCharConfig.HASH_BRACKETS); //prevent braces conflicts with javascript code! 
-  String e1 = "Result is #[js:#[code:source]]";
-  String actual = i.interpolate(e1);
-  String expected = "Result is 7.0";
+    String code = "function sum(a, b) { return a + b; } sum(3,4);";
+    Interpolator i = getBasicProvider()
+      .register(new ConstScope("code", code))
+      .register(new JavaScriptScope("js"))
+      .build(DefaultCharConfig.HASH_BRACKETS); //prevent braces conflicts with javascript code! 
+    String e1 = "Result is #[js:#[code:source]]";
+    String actual = i.interpolate(e1);
+    String expected = "Result is 7.0";
   ```
  * SysoutScope
   ```java
