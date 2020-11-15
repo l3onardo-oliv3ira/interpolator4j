@@ -220,7 +220,7 @@ The console output will be:
 
 ### Infrastructure
 ```java
-class FileDebuggingOutput implements DebugMode {
+class FileDebuggingOutput implements DebugOutput {
   public FileDebuggingOutput(File file) throws IOException {
     this.out = new PrintWriter(new FileWriter(file));
   }
@@ -231,11 +231,11 @@ class FileDebuggingOutput implements DebugMode {
 }
 
 //output to ./debugging.log file
-DebugMode mode = new FileDebuggingOutput(new File("./debugging.log"));
+DebugOutput out = new FileDebuggingOutput(new File("./debugging.log"));
 ```
 ### Service
 ```java
-String actual = i.interpolate(expression, mode);
+String actual = i.interpolate(expression, out);
 //...
 ```
 
