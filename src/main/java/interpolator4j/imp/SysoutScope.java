@@ -2,7 +2,11 @@ package interpolator4j.imp;
 
 public class SysoutScope extends PrintStreamScope {
   public SysoutScope() {
-    super("sysout", System.out);
+    this("sysout");
+  }
+  
+  public SysoutScope(String id) {
+    super(id, System.out);
   }
   
   @Override

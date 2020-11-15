@@ -42,15 +42,13 @@ public abstract class AbstractScope implements Scope {
   public final boolean equals(Object obj) {
     if (this == obj)
       return true;
-    if (obj == null)
+    if (!(obj instanceof Scope))
       return false;
-    if (getClass() != obj.getClass())
-      return false;
-    AbstractScope other = (AbstractScope) obj;
+    Scope other = (Scope) obj;
     if (id == null) {
-      if (other.id != null)
+      if (other.getId() != null)
         return false;
-    } else if (!id.equals(other.id))
+    } else if (!id.equals(other.getId()))
       return false;
     return true;
   }
