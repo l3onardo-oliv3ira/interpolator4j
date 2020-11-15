@@ -1,7 +1,7 @@
 package interpolator4j.imp;
 
 import interpolator4j.CharConfig;
-import interpolator4j.DebugMode;
+import interpolator4j.DebugOutput;
 import interpolator4j.DebugOption;
 import interpolator4j.Interpolator;
 import interpolator4j.ScopeProvider;
@@ -13,7 +13,7 @@ final class InterpolatorParser implements Interpolator {
   private final ScopeProvider provider;
   private final CharConfig charConfig;
   private final String expression;
-  private DebugMode mode;
+  private DebugOutput mode;
 
   private int current;
   private int endCurrent;
@@ -22,7 +22,7 @@ final class InterpolatorParser implements Interpolator {
     this(charConfig, provider, DebugOption.SILENT, "");
   }
   
-  private InterpolatorParser(CharConfig charConfig, ScopeProvider provider, DebugMode mode, String expression){
+  private InterpolatorParser(CharConfig charConfig, ScopeProvider provider, DebugOutput mode, String expression){
     this.charConfig = charConfig;
     this.endCurrent = (this.expression = expression.trim()).length();
     this.current = 0;
@@ -31,7 +31,7 @@ final class InterpolatorParser implements Interpolator {
   }
 
   @Override
-  public String interpolate(String expression, DebugMode debugMode){
+  public String interpolate(String expression, DebugOutput debugMode){
     this.mode = Arguments.requireNonNull(debugMode, "debugMode can't be null");
     String eval = eval(expression);
     mode.debug(expression, eval);

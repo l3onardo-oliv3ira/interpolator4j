@@ -5,5 +5,5 @@ public interface Interpolator {
     return interpolate(input, DebugOption.SILENT);
   }
   
-  String interpolate(String input, DebugMode mode);
+  String interpolate(String input, DebugOutput mode);
 }

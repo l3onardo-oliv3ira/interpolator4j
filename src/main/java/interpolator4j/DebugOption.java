@@ -1,6 +1,6 @@
 package interpolator4j;
 
-public enum DebugOption implements DebugMode {
+public enum DebugOption implements DebugOutput {
   SILENT(){
     @Override
     public void debug(String expression, String evaluated) {
