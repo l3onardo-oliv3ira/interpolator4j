@@ -299,7 +299,7 @@ boolean success = "Interpolator version 1.0 available".equals(actual);
  ```
  * OrScope
  ```java
-    "${or: exp1,exp2}"             -> (exp1) OR (exp2)
+    "${or:exp1,exp2}"             -> (exp1) OR (exp2)
     "(${or:exp1,exp2,exp3})"       -> ((exp1) OR (exp2) OR (exp3))
     "${or:field;exp1,exp2}"        -> (field:"exp1") OR (field:"exp2")  //Lucene sintaxe integration
     "(${or:field;exp1,exp2;exp3})" -> ((field:"exp1") OR (field:"exp2") OR (field:"exp3"))
@@ -317,7 +317,7 @@ boolean success = "Interpolator version 1.0 available".equals(actual);
 
     //Expression 3+2*sqrt(9) was cached, so it will not eval again 
     //(sqrt will not invoked more than 1 time, for example)
-    String e3 = i.interpolate(e1); 
+    String e3 = i.interpolate(e1); //eval to "Number 9.0" again using previous cached value
   ```
  * ConstScope
   ```java
