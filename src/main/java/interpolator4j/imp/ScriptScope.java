@@ -5,7 +5,7 @@ import javax.script.ScriptEngineManager;
 
 import interpolator4j.util.Arguments;
 
-public class ScriptScope extends AbstractScope{
+public class ScriptScope extends AbstractScope {
 
   protected static final ScriptEngineManager DEFAULT_MANAGER = new ScriptEngineManager();
 
@@ -15,7 +15,7 @@ public class ScriptScope extends AbstractScope{
     super(id);
     this.engine = Arguments.requireNonNull(engine, "engine can't be null");
   }
-
+  
   @Override
   public String doEval(String expression) {
     try {
