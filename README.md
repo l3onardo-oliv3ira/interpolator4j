@@ -80,7 +80,7 @@ boolean success = "1.0 quick brown fox jumps over three dogs".equals(actual);
 
 /*
 ${math:(5-4)} -> 1.0
-${map:3} -> tree
+${map:3} -> three
 */
 ```
 
@@ -156,14 +156,14 @@ String expression = "The user ${pojo:name} lives on ${pojo:address.street} " +
 String actual = i.interpolate(expression);
 
 boolean success = ("The user John lives on West Main " + 
-  "street number tree").equals(actual);
+  "street number three").equals(actual);
 
 /*
 ${pojo:name} -> John
 ${pojo:address.street} -> West Main
 ${math:sqrt(9)} -> 3.0
 ${long:3.0} -> 3
-${map:3} -> tree
+${map:3} -> three
 */
 ```
 
@@ -212,7 +212,7 @@ String expression = "The user ${pojo:name} lives on ${pojo:address.street} " +
 String actual = i.interpolate(expression, DebugOption.SYSOUT);
 
 boolean success = ("The user John lives on West Main " + 
-  "street number tree and his macbook " + 
+  "street number three and his macbook " + 
   "has 4 available processors").equals(actual);
 ```
 ### Output
