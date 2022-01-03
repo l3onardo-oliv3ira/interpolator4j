@@ -1,5 +1,5 @@
 # interpolator4j
-A simple expression interpolator written in java. An interpolation expression is defined by:
+A simple/small/fast expression interpolator written in java. An interpolation expression is defined by:
 
   _${id:expression}_ 
 
