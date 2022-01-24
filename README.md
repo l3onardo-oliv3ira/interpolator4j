@@ -21,7 +21,7 @@ where:
 
   String target = "This is a simple string literal in java";
 
-  boolean great = target.equals(evaluated); 
+  boolean great = target.equals(eval); 
 ```
 
 ## How to works
